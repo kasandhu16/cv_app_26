@@ -1,0 +1,24 @@
+# Ignore Composer dependencies if you prefer to install them after cloning
+/vendor/
+
+# Ignore runtime and upload directories
+/uploads/
+/pdf-cache/
+
+# Ignore local database files
+*.db
+/database/*.db
+
+# Ignore environment and temporary files
+.env
+.env.local
+*.log
+*.cache
+
+# Editor folders
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+thumbs.db

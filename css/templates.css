@@ -1,0 +1,391 @@
+/* CV Template Styles */
+
+/* Base CV Styles */
+.cv-template {
+    font-family: 'Times New Roman', serif;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #333;
+    background: white;
+    padding: 20px;
+    max-width: 210mm;
+    margin: 0 auto;
+}
+
+/* Professional Template */
+.professional-template .cv-header {
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.professional-template .personal-info h1 {
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.professional-template .contact-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.professional-template .address {
+    font-size: 11px;
+    color: #666;
+}
+
+.professional-template .cv-section {
+    margin-bottom: 20px;
+}
+
+.professional-template .cv-section h2 {
+    font-size: 16px;
+    color: #2c3e50;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.professional-template .work-item,
+.professional-template .education-item {
+    margin-bottom: 15px;
+}
+
+.professional-template .work-header h3,
+.professional-template .education-header h3 {
+    font-size: 14px;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.professional-template .work-dates,
+.professional-template .education-dates {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.professional-template .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.professional-template .skill-tag {
+    background: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+/* Modern Template */
+.modern-template {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.modern-template .cv-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.modern-template .personal-info h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.modern-template .contact-info {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.modern-template .summary {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.modern-template .cv-section {
+    margin-bottom: 30px;
+}
+
+.modern-template .cv-section h2 {
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.modern-template .cv-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: #3498db;
+}
+
+.modern-template .modern-item {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #3498db;
+}
+
+.modern-template .item-header h3 {
+    font-size: 16px;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.modern-template .company,
+.modern-template .school {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.modern-template .dates {
+    font-size: 12px;
+    color: #888;
+}
+
+.modern-template .cv-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.modern-template .modern-skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.modern-template .skill-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.modern-template .modern-list {
+    list-style: none;
+    padding: 0;
+}
+
+.modern-template .modern-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Creative Template */
+.creative-template {
+    font-family: 'Georgia', serif;
+}
+
+.creative-template .cv-header {
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.creative-template .cv-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-conic-gradient(
+        from 0deg,
+        transparent 0deg 90deg,
+        rgba(255,255,255,0.1) 90deg 180deg
+    );
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.creative-template .personal-info {
+    position: relative;
+    z-index: 1;
+}
+
+.creative-template .personal-info h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.creative-template .contact-info {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.creative-template .creative-section {
+    margin-bottom: 40px;
+}
+
+.creative-template .creative-section h2 {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: center;
+    position: relative;
+}
+
+.creative-template .creative-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+    border-radius: 2px;
+}
+
+.creative-template .creative-item {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.creative-template .creative-item:hover {
+    border-color: #4ecdc4;
+    transform: translateY(-2px);
+}
+
+.creative-template .item-header h3 {
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.creative-template .company,
+.creative-template .school {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.creative-template .dates {
+    font-size: 13px;
+    color: #888;
+    font-style: italic;
+}
+
+.creative-template .creative-text {
+    font-size: 15px;
+    line-height: 1.7;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.creative-template .creative-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.creative-template .skills-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.creative-template .skill-tag {
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+
+.creative-template .skill-tag:hover {
+    transform: scale(1.05);
+}
+
+.creative-template .creative-list {
+    list-style: none;
+    padding: 0;
+}
+
+.creative-template .creative-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.creative-template .creative-list li::before {
+    content: '🌟';
+    position: absolute;
+    left: 0;
+    top: 10px;
+}
+
+/* Print Styles */
+@media print {
+    .cv-template {
+        font-size: 11px;
+        padding: 15px;
+        box-shadow: none;
+        margin: 0;
+        max-width: none;
+    }
+
+    .creative-template .cv-header::before {
+        display: none;
+    }
+
+    .modern-template .modern-item {
+        break-inside: avoid;
+    }
+
+    .professional-template .work-item,
+    .professional-template .education-item {
+        break-inside: avoid;
+    }
+}

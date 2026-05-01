@@ -1,0 +1,929 @@
+/* Main Styles for ATS-Friendly CV Creator */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header and Navigation */
+.main-header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.logo h1 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+}
+
+.logo a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    color: #3498db;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-secondary {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #7f8c8d;
+}
+
+.btn-success {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #229954;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+input[type="month"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* Alerts */
+.alert {
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Auth Forms */
+.auth-form {
+    max-width: 400px;
+    margin: 2rem auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.auth-form h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+}
+
+.auth-links {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.auth-links a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+/* CV Creator Layout */
+.cv-creator {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.cv-form-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.cv-preview-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+}
+
+.form-section h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.template-selector {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.template-selector label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.work-experience-item,
+.education-item,
+.skill-item {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.remove-item {
+    margin-top: 0.5rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* CV Preview */
+#cv-preview {
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Dashboard */
+.dashboard {
+    margin: 2rem 0;
+}
+
+.dashboard-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.dashboard-section h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.resumes-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.resume-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.resume-info h3 {
+    margin-bottom: 0.5rem;
+}
+
+.resume-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.account-info {
+    margin-bottom: 2rem;
+}
+
+.account-info p {
+    margin-bottom: 0.5rem;
+}
+
+/* Blog */
+.blog-posts {
+    display: grid;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.blog-post-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.blog-post-card h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.blog-post-card .meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.blog-post-content {
+    line-height: 1.7;
+}
+
+.blog-post-content h2,
+.blog-post-content h3 {
+    color: #2c3e50;
+    margin: 1.5rem 0 1rem 0;
+}
+
+.blog-post-content ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.blog-post-content li {
+    margin-bottom: 0.5rem;
+}
+
+/* Footer */
+.main-footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 2rem 0;
+    margin-top: 4rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section a {
+    color: #bdc3c7;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #34495e;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Features */
+.features {
+    padding: 4rem 0;
+}
+
+.features h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #2c3e50;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.feature-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+/* Templates Preview */
+.templates-preview {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.templates-preview h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #2c3e50;
+}
+
+.templates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.template-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.template-preview {
+    height: 200px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+}
+
+.template-placeholder {
+    color: #666;
+    font-style: italic;
+}
+
+/* CTA Section */
+.cta {
+    text-align: center;
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.cta h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.cta p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}/ *   P r e m i u m   T e m p l a t e   S t y l e s   * / 
+ . t e m p l a t e - c a t e g o r y   { 
+         m a r g i n - b o t t o m :   2 r e m ; 
+ } 
+ 
+ . t e m p l a t e - c a t e g o r y   h 3   { 
+         c o l o r :   # 2 c 3 e 5 0 ; 
+         m a r g i n - b o t t o m :   1 r e m ; 
+         f o n t - s i z e :   1 . 1 e m ; 
+ } 
+ 
+ . t e m p l a t e - c a t e g o r y . p r e m i u m   h 3   { 
+         c o l o r :   # f 3 9 c 1 2 ; 
+ } 
+ 
+ . t e m p l a t e - c a t e g o r y . p r e m i u m   h 3   i   { 
+         m a r g i n - r i g h t :   0 . 5 r e m ; 
+ } 
+ 
+ . t e m p l a t e - s e l e c t o r   l a b e l   { 
+         d i s p l a y :   b l o c k ; 
+         m a r g i n - b o t t o m :   0 . 5 r e m ; 
+         p a d d i n g :   0 . 7 5 r e m ; 
+         b o r d e r :   2 p x   s o l i d   # e 9 e c e f ; 
+         b o r d e r - r a d i u s :   8 p x ; 
+         c u r s o r :   p o i n t e r ; 
+         t r a n s i t i o n :   a l l   0 . 3 s   e a s e ; 
+ } 
+ 
+ . t e m p l a t e - s e l e c t o r   l a b e l : h o v e r   { 
+         b o r d e r - c o l o r :   # 3 4 9 8 d b ; 
+         b a c k g r o u n d :   # f 8 f 9 f f ; 
+ } 
+ 
+ . t e m p l a t e - s e l e c t o r   l a b e l   i n p u t [ t y p e =  
+ r a d i o ]   { 
+         m a r g i n - r i g h t :   0 . 5 r e m ; 
+ } 
+ 
+ . t e m p l a t e - s e l e c t o r   l a b e l   i n p u t [ t y p e = r a d i o ] : c h e c k e d   +   *   { 
+         b o r d e r - c o l o r :   # 3 4 9 8 d b ; 
+         b a c k g r o u n d :   # e b f 5 f b ; 
+ } 
+ 
+ . p r e m i u m - t e m p l a t e   { 
+         p o s i t i o n :   r e l a t i v e ; 
+         o p a c i t y :   0 . 7 ; 
+ } 
+ 
+ . p r e m i u m - t e m p l a t e   i n p u t [ t y p e = r a d i o ] : d i s a b l e d   { 
+         c u r s o r :   n o t - a l l o w e d ; 
+ } 
+ 
+ . p r e m i u m - b a d g e   { 
+         p o s i t i o n :   a b s o l u t e ; 
+         t o p :   0 . 5 r e m ; 
+         r i g h t :   0 . 5 r e m ; 
+         b a c k g r o u n d :   l i n e a r - g r a d i e n t ( 4 5 d e g ,   # f 3 9 c 1 2 ,   # e 6 7 e 2 2 ) ; 
+         c o l o r :   w h i t e ; 
+         p a d d i n g :   0 . 2 5 r e m   0 . 5 r e m ; 
+         b o r d e r - r a d i u s :   1 2 p x ; 
+         f o n t - s i z e :   0 . 7 5 r e m ; 
+         f o n t - w e i g h t :   b o l d ; 
+         t e x t - t r a n s f o r m :   u p p e r c a s e ; 
+ } 
+ 
+ . p r e m i u m - n o t i c e   { 
+         b a c k g r o u n d :   # f f f 3 c d ; 
+         c o l o r :   # 8 5 6 4 0 4 ; 
+         p a d d i n g :   1 r e m ; 
+         b o r d e r - r a d i u s :   8 p x ; 
+         m a r g i n - t o p :   1 r e m ; 
+         t e x t - a l i g n :   c e n t e r ; 
+ } 
+ 
+ . p r e m i u m - n o t i c e   s t r o n g   { 
+         c o l o r :   # 5 3 3 f 0 0 ; 
+ } 
+ 
+ / *   P a y m e n t   S t y l e s   * / 
+ . p a y m e n t - c o n t a i n e r   { 
+         m a x - w i d t h :   6 0 0 p x ; 
+         m a r g i n :   5 0 p x   a u t o ; 
+         p a d d i n g :   4 0 p x ; 
+         b a c k g r o u n d :   w h i t e ; 
+         b o r d e r - r a d i u s :   1 5 p x ; 
+         b o x - s h a d o w :   0   1 0 p x   3 0 p x   r g b a ( 0 , 0 , 0 , 0 . 1 ) ; 
+ } 
+ 
+ . p a y m e n t - h e a d e r   { 
+         t e x t - a l i g n :   c e n t e r ; 
+         m a r g i n - b o t t o m :   4 0 p x ; 
+ } 
+ 
+ . p a y m e n t - h e a d e r   h 1   { 
+         c o l o r :   # 2 c 3 e 5 0 ; 
+         m a r g i n - b o t t o m :   1 0 p x ; 
+ } 
+ 
+ . p a y m e n t - h e a d e r   p   { 
+         c o l o r :   # 7 f 8 c 8 d ; 
+         f o n t - s i z e :   1 . 1 e m ; 
+ } 
+ 
+ . p r i c i n g - c a r d   { 
+         b a c k g r o u n d :   l i n e a r - g r a d i e n t ( 1 3 5 d e g ,   # 6 6 7 e e a   0 % ,   # 7 6 4 b a 2   1 0 0 % ) ; 
+         c o l o r :   w h i t e ; 
+         p a d d i n g :   4 0 p x ; 
+         b o r d e r - r a d i u s :   1 2 p x ; 
+         t e x t - a l i g n :   c e n t e r ; 
+         m a r g i n - b o t t o m :   3 0 p x ; 
+ } 
+ 
+ . p r i c e   { 
+         f o n t - s i z e :   3 e m ; 
+         f o n t - w e i g h t :   b o l d ; 
+         m a r g i n :   2 0 p x   0 ; 
+ } 
+ 
+ . p r i c e   s u p   { 
+         f o n t - s i z e :   0 . 5 e m ; 
+         v e r t i c a l - a l i g n :   s u p e r ; 
+ } 
+ 
+ . f e a t u r e s - l i s t   { 
+         l i s t - s t y l e :   n o n e ; 
+         p a d d i n g :   0 ; 
+         m a r g i n :   3 0 p x   0 ; 
+ } 
+ 
+ . f e a t u r e s - l i s t   l i   { 
+         p a d d i n g :   1 0 p x   0 ; 
+         b o r d e r - b o t t o m :   1 p x   s o l i d   r g b a ( 2 5 5 , 2 5 5 , 2 5 5 , 0 . 2 ) ; 
+         d i s p l a y :   f l e x ; 
+         a l i g n - i t e m s :   c e n t e r ; 
+         j u s t i f y - c o n t e n t :   c e n t e r ; 
+         g a p :   1 0 p x ; 
+ } 
+ 
+ . f e a t u r e s - l i s t   l i : l a s t - c h i l d   { 
+         b o r d e r - b o t t o m :   n o n e ; 
+ } 
+ 
+ . f e a t u r e s - l i s t   i   { 
+         c o l o r :   # f f d 7 0 0 ; 
+ } 
+ 
+ . p a y m e n t - b u t t o n   { 
+         b a c k g r o u n d :   # 2 7 a e 6 0 ; 
+         c o l o r :   w h i t e ; 
+         b o r d e r :   n o n e ; 
+         p a d d i n g :   1 5 p x   4 0 p x ; 
+         f o n t - s i z e :   1 . 2 e m ; 
+         f o n t - w e i g h t :   b o l d ; 
+         b o r d e r - r a d i u s :   8 p x ; 
+         c u r s o r :   p o i n t e r ; 
+         t r a n s i t i o n :   b a c k g r o u n d   0 . 3 s ; 
+         w i d t h :   1 0 0 % ; 
+ } 
+ 
+ . p a y m e n t - b u t t o n : h o v e r   { 
+         b a c k g r o u n d :   # 2 1 9 a 5 2 ; 
+ } 
+ 
+ . p a y m e n t - b u t t o n   i   { 
+         m a r g i n - r i g h t :   1 0 p x ; 
+ } 
+ 
+ . d e m o - n o t i c e   { 
+         b a c k g r o u n d :   # f f f 3 c d ; 
+         c o l o r :   # 8 5 6 4 0 4 ; 
+         p a d d i n g :   1 5 p x ; 
+         b o r d e r - r a d i u s :   8 p x ; 
+         m a r g i n - t o p :   2 0 p x ; 
+         t e x t - a l i g n :   c e n t e r ; 
+ } 
+ 
+ . d e m o - n o t i c e   s t r o n g   { 
+         c o l o r :   # 5 3 3 f 0 0 ; 
+ }  
+ . b t n - p r e m i u m   { 
+         b a c k g r o u n d :   l i n e a r - g r a d i e n t ( 4 5 d e g ,   # f 3 9 c 1 2 ,   # e 6 7 e 2 2 ) ; 
+         c o l o r :   w h i t e ; 
+         b o r d e r :   n o n e ; 
+         p a d d i n g :   1 0 p x   2 0 p x ; 
+         b o r d e r - r a d i u s :   6 p x ; 
+         t e x t - d e c o r a t i o n :   n o n e ; 
+         d i s p l a y :   i n l i n e - b l o c k ; 
+         f o n t - w e i g h t :   b o l d ; 
+         t r a n s i t i o n :   a l l   0 . 3 s   e a s e ; 
+         b o x - s h a d o w :   0   2 p x   4 p x   r g b a ( 0 , 0 , 0 , 0 . 1 ) ; 
+ } 
+ 
+ . b t n - p r e m i u m : h o v e r   { 
+         b a c k g r o u n d :   l i n e a r - g r a d i e n t ( 4 5 d e g ,   # e 6 7 e 2 2 ,   # d 3 5 4 0 0 ) ; 
+         t r a n s f o r m :   t r a n s l a t e Y ( - 1 p x ) ; 
+         b o x - s h a d o w :   0   4 p x   8 p x   r g b a ( 0 , 0 , 0 , 0 . 2 ) ; 
+         c o l o r :   w h i t e ; 
+         t e x t - d e c o r a t i o n :   n o n e ; 
+ } 
+ 
+ . b t n - p r e m i u m   i   { 
+         m a r g i n - r i g h t :   5 p x ; 
+ }  
+ 
+/* CV Template Styles */
+.cv-template {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.cv-header {
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.personal-info h1 {
+    font-size: 2.5em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.contact-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+.contact-info span {
+    display: flex;
+    align-items: center;
+}
+
+.contact-info span:before {
+    content: '•';
+    margin-right: 5px;
+    color: #3498db;
+}
+
+.address {
+    margin-top: 10px;
+    font-style: italic;
+    color: #7f8c8d;
+}
+
+.cv-section {
+    margin-bottom: 30px;
+}
+
+.cv-section h2 {
+    font-size: 1.5em;
+    color: #2c3e50;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.work-item, .education-item {
+    margin-bottom: 20px;
+}
+
+.work-header h3, .education-header h3 {
+    font-size: 1.2em;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.work-dates, .education-dates {
+    color: #7f8c8d;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.work-item p, .education-item p {
+    margin-left: 20px;
+    color: #555;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skill-tag {
+    background: #ecf0f1;
+    color: #2c3e50;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9em;
+}
+
+/* Professional Template Specific */
+.professional-template {
+    font-family: 'Times New Roman', serif;
+}
+
+.professional-template .cv-header {
+    border-bottom-color: #2c3e50;
+}
+
+.professional-template h1 {
+    font-family: 'Times New Roman', serif;
+}
+
+/* Modern Template Specific */
+.modern-template {
+    font-family: 'Helvetica', sans-serif;
+}
+
+.modern-template .cv-header {
+    border-bottom: none;
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    color: white;
+    padding: 30px;
+    margin: -40px -40px 30px -40px;
+    border-radius: 8px 8px 0 0;
+}
+
+.modern-template .personal-info h1 {
+    color: white;
+}
+
+.modern-template .contact-info {
+    color: rgba(255,255,255,0.9);
+}
+
+/* Creative Template Specific */
+.creative-template {
+    font-family: 'Georgia', serif;
+}
+
+.creative-template .cv-header {
+    border-bottom-color: #e74c3c;
+    position: relative;
+}
+
+.creative-template .cv-header:after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+}
+
+/* Additional template variations */
+.elegant-template .cv-header {
+    border-bottom-color: #9b59b6;
+}
+
+.tech-template .cv-header {
+    border-bottom-color: #1abc9c;
+}
+
+.minimal-template {
+    font-family: 'Arial', sans-serif;
+}
+
+.minimal-template .cv-section h2 {
+    border-bottom: 1px solid #ecf0f1;
+    font-weight: normal;
+}
+
+.bold-template .cv-section h2 {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.colorful-template .skill-tag {
+    background: linear-gradient(45deg, #f39c12, #e67e22);
+    color: white;
+}

@@ -1,0 +1,63 @@
+name: PHP CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v4
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, json, curl
+
+      - name: Install Composer
+        run: composer install --no-progress --no-suggest --prefer-dist
+
+      - name: Validate composer file
+        run: composer validate --strict
+
+      - name: Run PHP syntax check
+        run: |
+          find . -name '*.php' -not -path './vendor/*' -not -path './.github/*' | while read -r file; do
+            php -l "$file";
+          done
+
+  deploy:
+    name: Deploy to server
+    needs: build
+    if: github.ref == 'refs/heads/main' && secrets.DEPLOY_HOST
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v4
+        with:
+          php-version: '8.1'
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist
+
+      - name: Sync files to deployment server
+        uses: appleboy/scp-action@v0.1.6
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          port: ${{ secrets.DEPLOY_PORT || '22' }}
+          source: '.'
+          target: ${{ secrets.DEPLOY_PATH }}
+          rm: true
+          recursive: true
