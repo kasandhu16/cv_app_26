@@ -1,0 +1,32 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Hostinger
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          password: ${{ secrets.HOSTINGER_PASSWORD }}
+          port: 22
+          script: |
+            mkdir -p ~/public_html/cvmaker
+            rsync -avz --delete --exclude='.git/' --exclude='.github/' ./ ~/public_html/cvmaker/
+            cd ~/public_html/cvmaker
+            composer install --no-dev --optimize-autoloader
+            chmod -R 755 uploads/
+            chmod -R 755 pdf-cache/
+            echo "Deployment completed at $(date)" >> deployment.log
