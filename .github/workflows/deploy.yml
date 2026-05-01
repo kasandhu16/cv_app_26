@@ -23,7 +23,7 @@ jobs:
       - name: Deploy to Hostinger via FTP
         env:
           FTP_HOST: 145.223.77.119
-          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_USER: ${{ secrets.FTP_USERNAME }}
           FTP_PASS: ${{ secrets.FTP_PASSWORD }}
         run: |
           set -e
