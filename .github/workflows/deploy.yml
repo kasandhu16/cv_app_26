@@ -23,18 +23,23 @@ jobs:
       - name: Deploy to Hostinger via FTP
         env:
           FTP_HOST: 145.223.77.119
-          FTP_USER: ${{ secrets.FTP_USERNAME }}
-          FTP_PASS: ${{ secrets.FTP_PASSWORD }}
+          FTP_USER: ${{ secrets.HOSTINGER_USERNAME || secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.HOSTINGER_PASSWORD || secrets.FTP_PASSWORD }}
         run: |
           set -e
-          lftp -u "${FTP_USER}","${FTP_PASS}" "${FTP_HOST}" <<'EOF'
-          set ftp:ssl-allow no
-          set ftp:passive-mode on
-          set net:max-retries 1
-          set net:timeout 30
-          set net:reconnect-interval-base 5
-          cls public_html/cvmaker || mkdir public_html/cvmaker
-          cd public_html/cvmaker
-          mirror -R --verbose --delete --exclude-glob .git* --exclude-glob .github* --exclude-glob node_modules --exclude-glob vendor .
-          bye
+          echo "FTP_USER set=${FTP_USER:+yes} FTP_PASS set=${FTP_PASS:+yes}"
+          if [ -z "$FTP_USER" ] || [ -z "$FTP_PASS" ]; then
+            echo "ERROR: FTP username or password is empty. Check repository secrets."
+            exit 1
+          fi
+          lftp -u "${FTP_USER},${FTP_PASS}" "${FTP_HOST}" <<'EOF'
+            set ftp:ssl-allow no
+            set ftp:passive-mode on
+            set net:max-retries 1
+            set net:timeout 30
+            set net:reconnect-interval-base 5
+            cls public_html/cvmaker || mkdir public_html/cvmaker
+            cd public_html/cvmaker
+            mirror -R --verbose --delete --exclude-glob .git* --exclude-glob .github* --exclude-glob node_modules --exclude-glob vendor .
+            bye
           EOF
