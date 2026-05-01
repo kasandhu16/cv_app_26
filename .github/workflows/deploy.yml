@@ -15,15 +15,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4
 
       - name: Deploy to Hostinger via FTP
+        env:
+          FTP_HOST: 145.223.77.119
+          FTP_USER: ${{ secrets.HOSTINGER_USERNAME }}
+          FTP_PASS: ${{ secrets.HOSTINGER_PASSWORD }}
         run: |
-          apt-get update && apt-get install -y lftp
-          lftp -e "
-          set ftp:ssl-allow no
-          open -u ${{ secrets.HOSTINGER_USERNAME }},${{ secrets.HOSTINGER_PASSWORD }} 145.223.77.119
-          cd public_html/cvmaker
-          mirror -R --verbose --delete --exclude-glob .git* --exclude-glob .github* --exclude-glob node_modules --exclude-glob vendor .
-          quit
-          "
+          sudo apt-get update && sudo apt-get install -y lftp
+          lftp -c "set ftp:ssl-allow no; open -u ${FTP_USER},${FTP_PASS} ${FTP_HOST}; cd public_html/cvmaker; mirror -R --verbose --delete --exclude-glob .git* --exclude-glob .github* --exclude-glob node_modules --exclude-glob vendor .; quit"
