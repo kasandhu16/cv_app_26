@@ -33,7 +33,7 @@ jobs:
           set net:max-retries 1
           set net:timeout 30
           set net:reconnect-interval-base 5
-          mkdir -p public_html/cvmaker
+          cls public_html/cvmaker || mkdir public_html/cvmaker
           cd public_html/cvmaker
           mirror -R --verbose --delete --exclude-glob .git* --exclude-glob .github* --exclude-glob node_modules --exclude-glob vendor .
           bye
