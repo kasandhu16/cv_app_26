@@ -23,8 +23,8 @@ jobs:
       - name: Deploy to Hostinger via FTP
         env:
           FTP_HOST: 145.223.77.119
-          FTP_USER: ${{ secrets.HOSTINGER_USERNAME }}
-          FTP_PASS: ${{ secrets.HOSTINGER_PASSWORD }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASSWORD }}
         run: |
           set -e
           lftp -u "${FTP_USER}","${FTP_PASS}" "${FTP_HOST}" <<'EOF'
