@@ -10,22 +10,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Deploy to Hostinger
+      - name: Deploy to Hostinger via SFTP
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOSTINGER_HOST }}
+          host: 145.223.77.119
           username: ${{ secrets.HOSTINGER_USERNAME }}
           password: ${{ secrets.HOSTINGER_PASSWORD }}
           port: 22
           script: |
-            mkdir -p ~/public_html/cvmaker
-            rsync -avz --delete --exclude='.git/' --exclude='.github/' ./ ~/public_html/cvmaker/
-            cd ~/public_html/cvmaker
+            cd public_html/cvmaker
+            git clone --depth 1 https://github.com/kasandhu16/cv_app_26.git .
             composer install --no-dev --optimize-autoloader
             chmod -R 755 uploads/
             chmod -R 755 pdf-cache/
