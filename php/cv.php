@@ -1,176 +1,121 @@
 <?php
-require_once 'functions.php';
+// CV-related functions
 
-/**
- * Get CV data structure
- */
 function getCVDataStructure() {
     return [
-        'personal_info' => [
-            'full_name' => '',
+        'personal' => [
+            'name' => '',
+            'title' => '',
             'email' => '',
             'phone' => '',
             'address' => '',
-            'website' => '',
             'linkedin' => '',
-            'summary' => ''
+            'github' => ''
         ],
-        'work_experience' => [],
+        'summary' => '',
+        'experience' => [],
         'education' => [],
-        'skills' => [],
-        'languages' => [],
-        'certifications' => []
+        'skills' => []
     ];
 }
 
-/**
- * Validate and sanitize CV data
- */
-function processCVData($data) {
+function processCVData($postData) {
     $cvData = getCVDataStructure();
 
-    // Personal info
-    if (isset($data['personal_info'])) {
-        $personalInfo = array_map('sanitizeInput', $data['personal_info']);
-        $cvData['personal_info'] = array_replace($cvData['personal_info'], $personalInfo);
+    // Sanitize and process personal details
+    foreach ($cvData['personal'] as $key => $value) {
+        $cvData['personal'][$key] = htmlspecialchars(trim($postData['personal'][$key] ?? ''), ENT_QUOTES, 'UTF-8');
     }
 
-    // Work experience
-    if (isset($data['work_experience']) && is_array($data['work_experience'])) {
-        foreach ($data['work_experience'] as $exp) {
-            if (!empty($exp['job_title']) || !empty($exp['company'])) {
-                $cvData['work_experience'][] = [
-                    'job_title' => sanitizeInput($exp['job_title'] ?? ''),
-                    'company' => sanitizeInput($exp['company'] ?? ''),
-                    'location' => sanitizeInput($exp['location'] ?? ''),
-                    'start_date' => sanitizeInput($exp['start_date'] ?? ''),
-                    'end_date' => sanitizeInput($exp['end_date'] ?? ''),
-                    'current' => isset($exp['current']),
-                    'description' => sanitizeInput($exp['description'] ?? '')
-                ];
-            }
+    // Sanitize summary
+    $cvData['summary'] = htmlspecialchars(trim($postData['summary'] ?? ''), ENT_QUOTES, 'UTF-8');
+
+    // Process work experience
+    if (isset($postData['experience']) && is_array($postData['experience'])) {
+        foreach ($postData['experience'] as $exp) {
+            $cvData['experience'][] = [
+                'title' => htmlspecialchars(trim($exp['title'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                'company' => htmlspecialchars(trim($exp['company'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                'dates' => htmlspecialchars(trim($exp['dates'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                'description' => htmlspecialchars(trim($exp['description'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            ];
         }
     }
 
-    // Education
-    if (isset($data['education']) && is_array($data['education'])) {
-        foreach ($data['education'] as $edu) {
-            if (!empty($edu['degree']) || !empty($edu['school'])) {
-                $cvData['education'][] = [
-                    'degree' => sanitizeInput($edu['degree'] ?? ''),
-                    'school' => sanitizeInput($edu['school'] ?? ''),
-                    'location' => sanitizeInput($edu['location'] ?? ''),
-                    'graduation_date' => sanitizeInput($edu['graduation_date'] ?? ''),
-                    'gpa' => sanitizeInput($edu['gpa'] ?? ''),
-                    'description' => sanitizeInput($edu['description'] ?? '')
-                ];
-            }
+    // Process education
+    if (isset($postData['education']) && is_array($postData['education'])) {
+        foreach ($postData['education'] as $edu) {
+            $cvData['education'][] = [
+                'degree' => htmlspecialchars(trim($edu['degree'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                'school' => htmlspecialchars(trim($edu['school'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                'dates' => htmlspecialchars(trim($edu['dates'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            ];
         }
     }
 
-    // Skills
-    if (isset($data['skills']) && is_array($data['skills'])) {
-        foreach ($data['skills'] as $skill) {
-            if (!empty($skill['name'])) {
-                $cvData['skills'][] = [
-                    'name' => sanitizeInput($skill['name']),
-                    'level' => sanitizeInput($skill['level'] ?? 'Beginner')
-                ];
-            }
-        }
-    }
-
-    // Languages
-    if (isset($data['languages']) && is_array($data['languages'])) {
-        foreach ($data['languages'] as $lang) {
-            if (!empty($lang['name'])) {
-                $cvData['languages'][] = [
-                    'name' => sanitizeInput($lang['name']),
-                    'proficiency' => sanitizeInput($lang['proficiency'] ?? 'Basic')
-                ];
-            }
-        }
-    }
-
-    // Certifications
-    if (isset($data['certifications']) && is_array($data['certifications'])) {
-        foreach ($data['certifications'] as $cert) {
-            if (!empty($cert['name'])) {
-                $cvData['certifications'][] = [
-                    'name' => sanitizeInput($cert['name']),
-                    'issuer' => sanitizeInput($cert['issuer'] ?? ''),
-                    'date' => sanitizeInput($cert['date'] ?? ''),
-                    'url' => sanitizeInput($cert['url'] ?? '')
-                ];
-            }
+    // Process skills
+    if (!empty($postData['skills'])) {
+        $skills = explode(',', $postData['skills']);
+        foreach ($skills as $skill) {
+            $cvData['skills'][] = htmlspecialchars(trim($skill), ENT_QUOTES, 'UTF-8');
         }
     }
 
     return $cvData;
 }
 
-/**
- * Render CV template
- */
-function renderCVTemplate($cvData, $templateId) {
-    $templateFile = __DIR__ . '/../templates/template' . $templateId . '.php';
-
-    if (!file_exists($templateFile)) {
-        return '<p>Template not found</p>';
-    }
-
-    ob_start();
-    include $templateFile;
-    return ob_get_clean();
+function validateCVData($cvData) {
+    return !empty($cvData['personal']['name']) && !empty($cvData['personal']['email']);
 }
 
-/**
- * Generate PDF from CV data
- */
-function generateCVPDF($cvData, $templateId) {
-    require_once __DIR__ . '/../vendor/autoload.php'; // Dompdf autoload
-
-    $html = renderCVTemplate($cvData, $templateId);
-
-    $dompdf = new Dompdf\Dompdf();
-    $dompdf->loadHtml($html);
-    $dompdf->setPaper('A4', 'portrait');
-    $dompdf->render();
-
-    return $dompdf->output();
+function getResume($id, $userId) {
+    $pdo = getDBConnection();
+    $stmt = $pdo->prepare('SELECT * FROM resumes WHERE id = ? AND (user_id = ? OR user_id IS NULL)');
+    $stmt->execute([$id, $userId]);
+    return $stmt->fetch();
 }
 
-/**
- * Save PDF to cache
- */
-function savePDFToCache($pdfContent, $filename) {
-    $filepath = PDF_CACHE_DIR . $filename . '.pdf';
-    file_put_contents($filepath, $pdfContent);
-    return $filepath;
-}
+function saveResume($cvData, $templateId, $userId, $sessionId) {
+    $pdo = getDBConnection();
+    $dataJson = json_encode($cvData);
 
-/**
- * Get cached PDF
- */
-function getCachedPDF($filename) {
-    $filepath = PDF_CACHE_DIR . $filename . '.pdf';
-    if (file_exists($filepath)) {
-        return file_get_contents($filepath);
+    if (isset($_GET['id'])) { // Update existing
+        $resumeId = $_GET['id'];
+        $stmt = $pdo->prepare('UPDATE resumes SET data = ?, template_id = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? AND (user_id = ? OR guest_session_id = ?)');
+        if ($stmt->execute([$dataJson, $templateId, $resumeId, $userId, $sessionId])) {
+            return $resumeId;
+        }
+    } else { // Insert new
+        $stmt = $pdo->prepare('INSERT INTO resumes (user_id, guest_session_id, template_id, data) VALUES (?, ?, ?, ?)');
+        if ($stmt->execute([$userId, $userId ? null : $sessionId, $templateId, $dataJson])) {
+            return $pdo->lastInsertId();
+        }
     }
     return false;
 }
 
 /**
- * Clean old PDF cache files (older than 24 hours)
+ * Get all resumes for a specific user.
  */
-function cleanPDFCache() {
-    $files = glob(PDF_CACHE_DIR . '*.pdf');
-    $now = time();
-
-    foreach ($files as $file) {
-        if ($now - filemtime($file) > 86400) { // 24 hours
-            unlink($file);
-        }
+function getResumesForUser($userId) {
+    if (!$userId) {
+        return [];
     }
+    $pdo = getDBConnection();
+    $stmt = $pdo->prepare('SELECT id, template_id, updated_at FROM resumes WHERE user_id = ? ORDER BY updated_at DESC');
+    $stmt->execute([$userId]);
+    return $stmt->fetchAll();
 }
-?>
+
+/**
+ * Delete a resume.
+ */
+function deleteResume($resumeId, $userId) {
+    if (!$resumeId || !$userId) {
+        return false;
+    }
+    $pdo = getDBConnection();
+    // Ensure the resume belongs to the user before deleting
+    $stmt = $pdo->prepare('DELETE FROM resumes WHERE id = ? AND user_id = ?');
+    return $stmt->execute([$resumeId, $userId]);
+}
