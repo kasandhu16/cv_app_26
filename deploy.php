@@ -4,7 +4,7 @@
 // 1. SET YOUR SECRET TOKEN
 // *************************************************************************
 // THIS MUST MATCH THE "SECRET" IN YOUR GITHUB WEBHOOK SETTINGS
-$secret = 'REPLACE_THIS_WITH_A_LONG_RANDOM_STRING';
+$secret = 'zxdfghjikqwdfgbnmygvijnokmpl,';lkjhgfdsa';
 // *************************************************************************
 
 // 2. CONFIGURE YOUR DEPLOYMENT
