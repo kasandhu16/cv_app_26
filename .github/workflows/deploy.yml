@@ -1,16 +1,16 @@
-# GitHub Actions workflow to deploy a PHP application to Hostinger shared hosting.
+# GitHub Actions workflow to deploy a PHP application to Hostinger shared hosting using SFTP.
 #
 # HOW TO USE:
-# 1. Push your project to a GitHub repository.
+# 1. In your Hostinger control panel, find your SFTP details. For dynapulsar.com, the port is 65002.
 # 2. In your GitHub repository, go to Settings > Secrets and variables > Actions.
-# 3. Create the following secrets with your Hostinger FTP credentials:
-#    - FTP_SERVER: Your FTP server address (e.g., ftp.hostinger.com)
-#    - FTP_USERNAME: Your FTP username.
-#    - FTP_PASSWORD: Your FTP password.
+# 3. Create/update the following secrets:
+#    - SFTP_HOST: dynapulsar.com
+#    - SFTP_USERNAME: Your FTP/SSH username.
+#    - SFTP_PASSWORD: Your main FTP password.
 # 4. Push a change to the 'main' branch to trigger the deployment.
 #
 
-name: Deploy to Hostinger
+name: Deploy to Hostinger via SFTP
 
 on:
   push:
@@ -19,6 +19,7 @@ on:
 
 jobs:
   deploy:
+    name: Deploy to Hostinger
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -27,20 +28,26 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1' # Make sure this matches your Hostinger PHP version
+        php-version: '8.1'
         extensions: mbstring, pdo, pdo_sqlite, pdo_mysql
         tools: composer
 
+    - name: Check for composer.json
+      id: composer-check
+      uses: andstor/file-existence-action@v2
+      with:
+        files: "composer.json"
+
     - name: Install Composer Dependencies
+      if: steps.composer-check.outputs.files_exists == 'true' # Note: action outputs 'files_exists'
       run: composer install --no-interaction --no-dev --optimize-autoloader
 
-    - name: Deploy to Hostinger via FTP
-      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+    - name: Deploy to Hostinger via SFTP
+      uses: lupin0121/action-sftp-deploy@v1.3.1
       with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        # This is the directory on your server where files should be uploaded.
-        # For Hostinger, it's usually 'public_html'.
-        # If your app is in a subdirectory, use 'public_html/your_subdir'.
-        server-dir: public_html/
+        host: ${{ secrets.SFTP_HOST }}
+        port: 65002 # Custom port provided by webhost
+        username: ${{ secrets.SFTP_USERNAME }}
+        password: ${{ secrets.SFTP_PASSWORD }}
+        source: './' # Deploy the entire repository
+        target: '/public_html/cvmaker/' # Target directory on your Hostinger server
