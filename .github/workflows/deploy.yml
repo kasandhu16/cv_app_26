@@ -24,13 +24,12 @@ jobs:
       - name: Install Composer Dependencies
         run: composer install --no-interaction --no-dev --optimize-autoloader
 
-      - name: Deploy to Hostinger
-        uses: easing-themes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_KEY }}
-          ARGS: "-rlgoDzvc -i --delete"
-          SOURCE: "./"
-          REMOTE_HOST: ${{ secrets.HOSTINGER_HOST }}
-          REMOTE_USER: ${{ secrets.HOSTINGER_USER }}
-          TARGET: "/home/u998578075/domains/dynapulsar.com/public_html/cvmaker"
-          EXCLUDE: "/.git/, /.github/, /deploy.php, /deploy_log.txt, /README.md"
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          source: "./"
+          target: "/home/u998578075/domains/dynapulsar.com/public_html/cvmaker"
+          exclude: "/.git*,/.github/,/deploy.php,/deploy_log.txt,/README.md"
