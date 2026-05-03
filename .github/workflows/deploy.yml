@@ -14,14 +14,22 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Execute deployment script on server
-        uses: appleboy/ssh-action@v0.1.10
+        uses: appleboy/ssh-action@v1.0.3 # Use a more recent and stable version
         with:
           host: ${{ secrets.HOSTINGER_HOST }}
           username: ${{ secrets.HOSTINGER_USER }}
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
           script: |
+            # 1. Navigate to the project directory on the server
             cd /home/u998578075/domains/dynapulsar.com/public_html/cvmaker
+            
+            # 2. Fetch the latest changes from the GitHub repository
             git fetch origin main
+            
+            # 3. Force the local repository to match the remote one, discarding any local changes
             git reset --hard origin/main
+            
+            # 4. Install/update composer dependencies for production
             composer install --no-interaction --no-dev --optimize-autoloader
-            echo 'Deployment successful.'
+            
+            echo "Deployment completed successfully."
