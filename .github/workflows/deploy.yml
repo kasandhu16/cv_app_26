@@ -1,0 +1,36 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: mbstring, dom, pdo, pdo_sqlite, sqlite3
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --no-dev --optimize-autoloader
+
+      - name: Deploy to Hostinger
+        uses: easing-themes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_KEY }}
+          ARGS: "-rlgoDzvc -i --delete"
+          SOURCE: "./"
+          REMOTE_HOST: ${{ secrets.HOSTINGER_HOST }}
+          REMOTE_USER: ${{ secrets.HOSTINGER_USER }}
+          TARGET: "/home/u998578075/domains/dynapulsar.com/public_html/cvmaker"
+          EXCLUDE: "/.git/, /.github/, /deploy.php, /deploy_log.txt, /README.md"
