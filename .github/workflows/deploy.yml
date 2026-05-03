@@ -1,14 +1,7 @@
 # GitHub Actions workflow to deploy a PHP application to Hostinger shared hosting using SFTP.
-#
-# HOW TO USE:
-# 1. Ensure your GitHub repository secrets are set correctly:
-#    - SFTP_HOST: dynapulsar.com
-#    - SFTP_USERNAME: Your FTP/SSH username.
-#    - SFTP_PASSWORD: Your main FTP password.
-# 2. Push a change to the 'main' branch to trigger the deployment.
-#
+# This version manually installs an SFTP client to avoid issues with resolving GitHub Actions.
 
-name: Deploy to Hostinger via SFTP
+name: Deploy to Hostinger via SFTP (Manual)
 
 on:
   push:
@@ -30,22 +23,22 @@ jobs:
         extensions: mbstring, pdo, pdo_sqlite, pdo_mysql
         tools: composer
 
-    - name: Check for composer.json
-      id: composer-check
-      uses: andstor/file-existence-action@v2
-      with:
-        files: "composer.json"
-
     - name: Install Composer Dependencies
-      if: steps.composer-check.outputs.files_exists == 'true'
+      if: hashFiles('composer.json') != ''
       run: composer install --no-interaction --no-dev --optimize-autoloader
 
-    - name: Deploy to Hostinger via SFTP
-      uses: appleboy/sftp-action@v2.2.0
-      with:
-        host: ${{ secrets.SFTP_HOST }}
-        username: ${{ secrets.SFTP_USERNAME }}
-        password: ${{ secrets.SFTP_PASSWORD }}
-        port: 65002 # Custom port for dynapulsar.com
-        source: "./" # Deploy the entire project
-        target: "/public_html/cvmaker/" # Your target directory
+    - name: Install lftp SFTP Client
+      run: sudo apt-get -y install lftp
+
+    - name: Deploy files via lftp
+      run: |
+        lftp -c "
+        set sftp:auto-confirm yes;
+        open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} -p ${{ secrets.SFTP_PORT }} sftp://${{ secrets.SFTP_HOST }};
+        mirror -R -v -e ./ /public_html/cvmaker/;
+        "
+      env:
+        SFTP_HOST: ${{ secrets.SFTP_HOST }}
+        SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+        SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        SFTP_PORT: 65002
