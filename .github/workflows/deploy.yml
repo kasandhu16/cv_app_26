@@ -1,13 +1,11 @@
 # GitHub Actions workflow to deploy a PHP application to Hostinger shared hosting using SFTP.
 #
 # HOW TO USE:
-# 1. In your Hostinger control panel, find your SFTP details. For dynapulsar.com, the port is 65002.
-# 2. In your GitHub repository, go to Settings > Secrets and variables > Actions.
-# 3. Create/update the following secrets:
+# 1. Ensure your GitHub repository secrets are set correctly:
 #    - SFTP_HOST: dynapulsar.com
 #    - SFTP_USERNAME: Your FTP/SSH username.
 #    - SFTP_PASSWORD: Your main FTP password.
-# 4. Push a change to the 'main' branch to trigger the deployment.
+# 2. Push a change to the 'main' branch to trigger the deployment.
 #
 
 name: Deploy to Hostinger via SFTP
@@ -39,15 +37,15 @@ jobs:
         files: "composer.json"
 
     - name: Install Composer Dependencies
-      if: steps.composer-check.outputs.files_exists == 'true' # Note: action outputs 'files_exists'
+      if: steps.composer-check.outputs.files_exists == 'true'
       run: composer install --no-interaction --no-dev --optimize-autoloader
 
     - name: Deploy to Hostinger via SFTP
-      uses: lupin0121/action-sftp-deploy@v1.3.1
+      uses: appleboy/sftp-action@v2.2.0
       with:
         host: ${{ secrets.SFTP_HOST }}
-        port: 65002 # Custom port provided by webhost
         username: ${{ secrets.SFTP_USERNAME }}
         password: ${{ secrets.SFTP_PASSWORD }}
-        source: './' # Deploy the entire repository
-        target: '/public_html/cvmaker/' # Target directory on your Hostinger server
+        port: 65002 # Custom port for dynapulsar.com
+        source: "./" # Deploy the entire project
+        target: "/public_html/cvmaker/" # Your target directory
