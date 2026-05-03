@@ -1,53 +1,46 @@
+# GitHub Actions workflow to deploy a PHP application to Hostinger shared hosting.
+#
+# HOW TO USE:
+# 1. Push your project to a GitHub repository.
+# 2. In your GitHub repository, go to Settings > Secrets and variables > Actions.
+# 3. Create the following secrets with your Hostinger FTP credentials:
+#    - FTP_SERVER: Your FTP server address (e.g., ftp.hostinger.com)
+#    - FTP_USERNAME: Your FTP username.
+#    - FTP_PASSWORD: Your FTP password.
+# 4. Push a change to the 'main' branch to trigger the deployment.
+#
+
 name: Deploy to Hostinger
 
 on:
   push:
     branches:
       - main
-      - master
-  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1' # Make sure this matches your Hostinger PHP version
+        extensions: mbstring, pdo, pdo_sqlite, pdo_mysql
+        tools: composer
 
-      - name: Deploy to Hostinger via FTP
-        env:
-          FTP_HOST: 145.223.77.119
-          HOSTINGER_USERNAME: ${{ secrets.HOSTINGER_USERNAME }}
-          HOSTINGER_PASSWORD: ${{ secrets.HOSTINGER_PASSWORD }}
-          FTP_USER_SECRET: ${{ secrets.FTP_USER }}
-          FTP_PASS_SECRET: ${{ secrets.FTP_PASSWORD }}
-          FTP_USERNAME_SECRET: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD_SECRET: ${{ secrets.FTP_PASSWORD }}
-        run: |
-          set -e
-          FTP_USER="${HOSTINGER_USERNAME:-${FTP_USER_SECRET:-${FTP_USERNAME_SECRET}}}"
-          FTP_PASS="${HOSTINGER_PASSWORD:-${FTP_PASS_SECRET:-${FTP_PASSWORD_SECRET}}}"
-          echo "FTP_USER set=${FTP_USER:+yes} FTP_PASS set=${FTP_PASS:+yes}"
-          if [ -z "$FTP_USER" ] || [ -z "$FTP_PASS" ]; then
-            echo "ERROR: FTP username or password is empty. Check repository secrets."
-            echo "Make sure one of these secrets is defined: HOSTINGER_USERNAME, FTP_USER, FTP_USERNAME"
-            echo "And one of: HOSTINGER_PASSWORD, FTP_PASSWORD"
-            exit 1
-          fi
-          lftp -u "${FTP_USER},${FTP_PASS}" "${FTP_HOST}" <<'EOF'
-            set ftp:ssl-allow no
-            set ftp:passive-mode on
-            set net:max-retries 1
-            set net:timeout 30
-            set net:reconnect-interval-base 5
-            cls public_html/cvmaker || mkdir public_html/cvmaker
-            cd public_html/cvmaker
-            mirror -R --verbose --delete --exclude-glob .git* --exclude-glob .github* --exclude-glob node_modules --exclude-glob vendor .
-            bye
-          EOF
+    - name: Install Composer Dependencies
+      run: composer install --no-interaction --no-dev --optimize-autoloader
+
+    - name: Deploy to Hostinger via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        # This is the directory on your server where files should be uploaded.
+        # For Hostinger, it's usually 'public_html'.
+        # If your app is in a subdirectory, use 'public_html/your_subdir'.
+        server-dir: public_html/
