@@ -1,4 +1,4 @@
-name: Deploy to Hostinger
+name: Deploy to Server
 
 on:
   push:
@@ -7,29 +7,22 @@ on:
 
 jobs:
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Execute deployment script on server
-        uses: appleboy/ssh-action@v1.0.3 # Use a more recent and stable version
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
-          host: ${{ secrets.HOSTINGER_HOST }}
-          username: ${{ secrets.HOSTINGER_USER }}
-          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          php-version: '8.2'
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
-            # 1. Navigate to the project directory on the server
-            cd /home/u998578075/domains/dynapulsar.com/public_html/cvmaker
-            
-            # 2. Fetch the latest changes from the GitHub repository
-            git fetch origin main
-            
-            # 3. Force the local repository to match the remote one, discarding any local changes
-            git reset --hard origin/main
-            
-            # 4. Install/update composer dependencies for production
-            composer install --no-interaction --no-dev --optimize-autoloader
-            
-            echo "Deployment completed successfully."
+            cd /home/user/cv_app_26
+            php deploy.php
