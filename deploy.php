@@ -9,7 +9,12 @@ function deploy() {
     $git_output = shell_exec('git pull origin main 2>&1');
     log_message('GIT: ' . $git_output);
 
-    // 2. Run database migrations
+    // 2. Install Composer dependencies
+    log_message('INFO: Installing Composer dependencies...');
+    $composer_output = shell_exec('composer install --no-dev --optimize-autoloader 2>&1');
+    log_message('COMPOSER: ' . $composer_output);
+
+    // 3. Run database migrations
     log_message('INFO: Running database migrations...');
     $migration_output = shell_exec('php run_migrations.php 2>&1');
     log_message('MIGRATION: ' . $migration_output);
