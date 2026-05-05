@@ -54,7 +54,7 @@ function loginUser($email, $password) {
     }
 
     // Get user
-    $stmt = $pdo->prepare('SELECT id, username, password_hash, is_premium FROM users WHERE email = ?');
+    $stmt = $pdo->prepare('SELECT id, username, password_hash FROM users WHERE email = ?');
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
@@ -65,8 +65,7 @@ function loginUser($email, $password) {
     // Set session
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['username'] = $user['username'];
-    $_SESSION['is_premium'] = (bool)$user['is_premium'];
-
+    
     return ['success' => true, 'user_id' => $user['id']];
 }
 
@@ -87,7 +86,7 @@ function getCurrentUser() {
     }
 
     $pdo = getDBConnection();
-    $stmt = $pdo->prepare('SELECT id, username, email, created_at, is_premium FROM users WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT id, username, email, created_at FROM users WHERE id = ?');
     $stmt->execute([$_SESSION['user_id']]);
     return $stmt->fetch();
 }
@@ -96,17 +95,8 @@ function getCurrentUser() {
  * Check if the current user is a premium member.
  */
 function isPremiumUser($userId = null) {
-    if ($userId === null) {
-        return isset($_SESSION['is_premium']) && $_SESSION['is_premium'] === true;
-    }
-
-    // If a user ID is provided, check the database directly
-    $pdo = getDBConnection();
-    $stmt = $pdo->prepare('SELECT is_premium FROM users WHERE id = ?');
-    $stmt->execute([$userId]);
-    $result = $stmt->fetchColumn();
-
-    return (bool)$result;
+    // Since the is_premium feature is not fully implemented, we will return false for now.
+    return false;
 }
 
 /**
